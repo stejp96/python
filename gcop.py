@@ -32,7 +32,7 @@ def GetGPUTemp():
 	except:
 		print("Invalid file data")
 		return;
-	print "GPU temp is", GPUTemperaturedata;
+	#print "GPU temp is", GPUTemperaturedata;
 	return;
 
 def SendMessage(urgency ,message):
@@ -54,16 +54,16 @@ def GetCPUTemp():
 		print("Invalid file data")
 		return;
 	CPUTemperaturedata /=1000
-	print "CPU temp is", CPUTemperaturedata;
+	#print "CPU temp is", CPUTemperaturedata;
 	return;
 
 def Main():
 	while True:
-		time.sleep(60)
+		time.sleep(20)
 		GetGPUTemp()
 		GetCPUTemp()
 		if CPUTemperaturedata >= 30.0 and CPUTemperaturedata <= 60.0 or GPUTemperaturedata >= 30.0 and GPUTemperaturedata <= 60.0:
-			#SendMessage(UrgencyLow, MessageNormal)
+			SendMessage(UrgencyLow, MessageNormal)
 			pass
 		elif CPUTemperaturedata >= 61.0 and CPUTemperaturedata <= 80.0 or GPUTemperaturedata >= 86.0 and GPUTemperaturedata <= 80.0:
 			SendMessage(UrgencyNormal, MessageHigh)
