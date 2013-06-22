@@ -12,7 +12,7 @@ import subprocess
 
 MessageHigh = "Temperatures reaching high levels."
 MessageCritical = "Temperatures has reached critical level. Shutdown initiated in 1 minute"
-#MessageNormal = "Temperatures is at a normal level"
+MessageNormal = "Temperatures is at a normal level"
 UrgencyLow = "low"
 UrgencyNormal = "Normal"
 UrgencyCritical = "Critical"
