@@ -27,7 +27,11 @@ def GetGPUTemp():
 	global GPUTemperaturedata
 	proc = subprocess.Popen(['aticonfig --odgt | sed -n 3p | cut -c 43-47'], stdout=subprocess.PIPE, shell=True)
 	GPUTemperaturedata = proc.communicate()[0]
-	GPUTemperaturedata = float(GPUTemperaturedata)
+	try:
+		GPUTemperaturedata = float(GPUTemperaturedata)
+	except:
+		print("Invalid file data")
+		return;
 	print "GPU temp is", GPUTemperaturedata;
 	return;
 
