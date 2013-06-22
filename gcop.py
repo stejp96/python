@@ -3,8 +3,8 @@
 """
   Description: Getting temperatures for CPU and GPU to keep your computer from overheating. (Only ati GPU's at this point).
   Author: Steffen Pettersen <stejp96@gmail.com>
-  Dependecies: lm-sensors for CPU temp. aticonfig for GPU temp.
-  Lisence: This code can be used, modefied and distributed freely, as long as this note containing the original author, the source and this license, is put along with the source code.
+  Dependencies: lm-sensors for CPU temp. aticonfig for GPU temp.
+  License: This code can be used, modified and distributed freely, as long as this note containing the original author, the source and this license, is put along with the source code.
 """
 
 import time
