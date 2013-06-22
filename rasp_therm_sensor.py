@@ -1,80 +1,79 @@
+#!/usr/bin/python
+
+"""
+	Description: Raspberry PI thermostat with a DS18B20 sensor.
+	Author: Steffen Pettersen <stejp96@gmail.com>
+	License: This code can be used, modified and distributed freely, 
+	 as long as this note containing the original author, the source and this license, is put along with the source code.
+"""
+
 import time
 import subprocess
-#import RPi.GPIO as GPIO
-#GPIO.setup(14, output)
+import RPi.GPIO as GPIO
+GPIO.setmode(GPIO.BOARD)
+GPIO.setup(3, GPIO.OUT)
+GPIO.setwarnings(False)
 
-'''
-def GPIOFalse():
-GPIO.output(14, False)
-return;
-'''
+currentState = None
+temperature = 0
+degrees = 25.0
 
-'''
-def GPIOTrue():
-GPIO.output(14, True)
-return;
-'''
+def GPIOSet(state):
+	global currentState
+	if state == currentState:
+		return
+	currentState = state
+	if state:
+		GPIO.output(3, GPIO.HIGH)
+		print ("Set pin 3 to HIGH")
+	else:
+		GPIO.output(3, GPIO.LOW)
+		print ("Set pin 3 to LOW")
+	return
 
 def CheckMod():
-str1 = w1-gpio
-str2 = w1-therm
 	a = subprocess.Popen('lsmod', stdout=subprocess.PIPE)
-	b = subprocess.Popen(['grep', str1], stdin=a.stdout, stdout=subprocess.PIPE)
-	c = subprocess.Popen(['grep', str2], stdin=a.stdout, stdout=subprocess.PIPE)
+	b = subprocess.Popen(['grep', 'w1_gpio'], stdin=a.stdout, stdout=subprocess.PIPE)
+	a1 = subprocess.Popen('lsmod', stdout=subprocess.PIPE)	
+	c = subprocess.Popen(['grep', 'w1_therm'], stdin=a1.stdout, stdout=subprocess.PIPE)
 	result_str = b.communicate()[0]	
 	result_str2 = c.communicate()[0]
+	if result_str.find("w1_gpio") == -1:
+		subprocess.Popen('sudo modprobe w1-gpio', shell=True)
+		print("Ran the command w1-gpio")
+	else:
+		print("Didn't load 'w1-gpio'")
+	if result_str2.find("w1_therm") == -1:
+		subprocess.Popen('sudo modprobe w1-therm', shell=True)
+		print("Ran the command w1-therm")
+	else: 
+		print("Didn't load 'w1-therm'")
 	return;
 
 def GetTemp():
-        degrees = 25.0
-        tfile = open("/sys/bus/w1/devices/28-0000046d339d/w1_slave")
-        text = tfile.read()
-        tfile.close()
-        temperaturedata = text.split("\n")[1].split(" ")[9]
-        temperature = float (temperaturedata[2:])
-        temperature /= 1000
-        #print temperature;
-        return;
-
-def RunCommands(a):
-        modprobe1 = "sudo modprobe w1-gpio"
-        modprobe2 = "sudo modprobe w1-therm"
-	if a = 1: 
-        subprocess.Popen('modprobe1', shell=True)
-	elif a = 2:
-        subprocess.Popen('modprobe2', shell=True)
-	else: print "some error in RunCommands()"
-        return;
-
-def StartUp():
-    count = 0
-    while count == 0:
-      print ("Starting up...")
-      count +=1 
+	global temperature
+        try:
+		time.sleep(2)
+		tfile = open("/sys/bus/w1/devices/28-0000046d339d/w1_slave")
+	except IOError:
+		print("Couldn't load file")
+	text = tfile.read()
+	tfile.close()
+	temperaturedata = text.split("\n")[1].split(" ")[9]
+	temperature = float (temperaturedata[2:])
+	temperature /= 1000
+	return; 	
         
-def Main():
-	time.sleep(1)
-	if result_str.find(str1) == -1:
-		RunCommands(1)
-	elif result_str2.find(str2) == -1:
-		RunCommands(2)
-	time.sleep(5)
-	if temperature > degrees:
-	   print temperature;
-	   GPIOTrue()
-	else: 
-	    print("Less than 25 degrees")
-	  
-	
+def Loop():
+	CheckMod()
+	while(True):
+		GetTemp()
+		print temperature
+		if temperature >= degrees:
+			GPIOSet(False)
+		else:
+			GPIOSet(True)
+	return;
 
-while (true):
-	StartUp()
-	 time.sleep(2)
-        Main()
-	time.sleep(2)
-
-
-
-
-
-
+if __name__=="__main__":
+	Loop()
