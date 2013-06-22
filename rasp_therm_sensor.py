@@ -3,6 +3,7 @@
 """
 	Description: Raspberry PI thermostat with a DS18B20 sensor.
 	Author: Steffen Pettersen <stejp96@gmail.com>
+	Dependencies: Rasperry PI python library. DS18B20 sensor.
 	License: This code can be used, modified and distributed freely, 
 	 as long as this note containing the original author, the source and this license, is put along with the source code.
 """
