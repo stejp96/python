@@ -1,6 +1,4 @@
-python
+scripts
 ======
 
-This is PYTHON
-
-This repo is not dedicated to only one big project, I use it for my many small projects.
+This repo is just a collection of scripts mainly in python, designed for linux.
